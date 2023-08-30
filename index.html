@@ -27,10 +27,17 @@
   <div id='map' />
   <script>
     mapboxgl.accessToken = "pk.eyJ1Ijoic2ltb253aXNkb20iLCJhIjoibm1qRnBNRSJ9.c_oV3bXMnUZpfOluEH0eBw"
+    
+    const bounds = [
+      [-99.207678, 19.268647], // Southwest coordinates (Mexico City)
+      [-97.260135, 19.033398] // Northeast coordinates (Pico de Orizaba)
+    ];
+
     let map = new mapboxgl.Map({
       // The container property links the div that we defined above to our incoming map.
       container: 'map',
-      style: "mapbox://styles/simonwisdom/cllpy1mpp00hy01ph707vgod2"
+      style: "mapbox://styles/simonwisdom/cllpy1mpp00hy01ph707vgod2",
+      maxBounds: bounds // Set the map's geographical boundaries.
     });
   </script>
 </body>
