@@ -3,44 +3,67 @@
   
 <head>
   <!-- CDN addresses to Mapbox -->
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
   <title>CDMX Volcano Map</title>
   <style>
-    /* We get rid of the default margin and padding on the body by setting both to 0. */
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    /* To make our map take up the full screen, we position it at the absolute top and bottom and give it a 100% width. */
-    #map {
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    .indicator {
+      width: 12px;
+      height: 12px;
+      background-color: red;
       position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
+      top: 50%;
+      left: 100%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      display: none;
     }
   </style>
 </head>
   
 <body>
   <!-- Here we declare the div that will ultimately house our map. -->
-  <div id='map' />
+  <div id='map'></div>
+  <div id="indicator" class="indicator"></div>
   <script>
     mapboxgl.accessToken = "pk.eyJ1Ijoic2ltb253aXNkb20iLCJhIjoibm1qRnBNRSJ9.c_oV3bXMnUZpfOluEH0eBw"
     
-    const bounds = [
-      [-99.207678, 19.268647], // Southwest coordinates (Mexico City)
-      [-97.260135, 19.033398] // Northeast coordinates (Pico de Orizaba)
+const bounds = [
+    [-99.766667, 19.030000], // Bottom-left coordinates (Pico de Orizaba to Nevado de Toluca)
+    [-97.270000, 19.432608]  // Top-right coordinates (Mexico City)
     ];
 
-    let map = new mapboxgl.Map({
-      // The container property links the div that we defined above to our incoming map.
-      container: 'map',
-      style: "mapbox://styles/simonwisdom/cllpy1mpp00hy01ph707vgod2",
-      center: [-99.033800, 19.151969], // Starting position within the maxBounds
-      zoom: 10, // starting zoom
-      maxBounds: bounds // Set the map's geographical boundaries.
+const defaultCenter = [-99.233209, 19.432608]; // Mexico City's coordinates
+
+let map = new mapboxgl.Map({
+    // The container property links the div that we defined above to our incoming map.
+    container: 'map',
+    style: "mapbox://styles/simonwisdom/cllpy1mpp00hy01ph707vgod2",
+    center: defaultCenter, // Starting position within the maxBounds
+    zoom: 12, // starting zoom
+    pitch: 60,  // Set the pitch to 60 degrees to make the view angle as low as possible.
+    maxBounds: bounds // Set the map's geographical boundaries.
+});
+
+map.on('style.load', () => {
+// Ensure the source ID is unique
+const sourceId = 'unique-source-id';
+
+map.addSource(sourceId, {
+    'type': 'raster-dem',
+    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+    'tileSize': 512,
+    'maxzoom': 14
+});
+
+// Add the DEM source as a terrain layer with exaggerated height
+map.setTerrain({ 'source': sourceId, 'exaggeration': 3.5 });
+
     });
+
   </script>
 </body>
   
