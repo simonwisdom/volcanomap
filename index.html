@@ -10,24 +10,12 @@
   <style>
     body { margin: 0; padding: 0; }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
-    .indicator {
-      width: 12px;
-      height: 12px;
-      background-color: red;
-      position: absolute;
-      top: 50%;
-      left: 100%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      display: none;
-    }
   </style>
 </head>
   
 <body>
   <!-- Here we declare the div that will ultimately house our map. -->
   <div id='map'></div>
-  <div id="indicator" class="indicator"></div>
   <script>
     mapboxgl.accessToken = "pk.eyJ1Ijoic2ltb253aXNkb20iLCJhIjoibm1qRnBNRSJ9.c_oV3bXMnUZpfOluEH0eBw"
     
